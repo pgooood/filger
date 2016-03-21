@@ -1,0 +1,63 @@
+body,table{
+	font-size:14px;
+}
+th{
+	background: #fff;
+}
+.wrapper{
+	max-height: 500px;
+	overflow: auto;
+}
+.toolbar{
+	margin: 0;
+}
+label{
+	font-weight: normal;
+	cursor: pointer;
+	margin: 0;
+}
+.file label{
+	display: inline-block;
+	background: no-repeat 0 50%;
+	padding: 0 0 0 20px;
+}
+.dir label{
+	display: inline-block;
+	background: url(../images/icons/folder.png) no-repeat 0 50%;
+	padding: 0 0 0 20px;
+}
+.progress{
+	height: 3px;
+	border-radius: 0;
+	margin:0;
+}
+table.dir{
+	margin: 0;
+}
+table.dir thead th{
+	white-space: nowrap;
+}
+.sort .sort-text{
+	cursor:pointer;
+	border-bottom:1px dashed #ccc;
+}
+.sort .sort-icon{
+	font-size: 12px;
+}
+th.chb,
+td.chb{
+	width:5%;
+	text-align: center;
+}
+td.name{
+	width:48%;
+}
+td.ext{
+	width:10%;
+}
+td.size{
+	width:12%;
+}
+td.date{
+	width:20%;
+}
