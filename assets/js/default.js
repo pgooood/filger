@@ -28,8 +28,9 @@ function uploadProgressBar(){
 	};
 	this.stop();
 };
-
-/* список файлов */
+function getActiveEditor(){
+	return parent && parent.tinyMCE ? parent.tinyMCE.activeEditor : null;
+};
 function dirList(){
 	var obj=this;
 	this.sort='name';
@@ -50,7 +51,10 @@ function dirList(){
 		this.load('?xml=1&path=.');
 	};
 	this.message=function(v){
-		parent.tinyMCE.activeEditor.windowManager.alert(v);
+		var editor = getActiveEditor();
+		if(editor)
+			editor.windowManager.alert(v);
+		else alert(v);
 	};
 	this.reset=function(state){
 		$('input[name="file"],input[name="dir"]')
@@ -137,7 +141,7 @@ $(function(){
 	
 	var upb = new uploadProgressBar()
 		,dl = new dirList()
-		,editor = parent && parent.tinyMCE ? parent.tinyMCE.activeEditor : null
+		,editor = getActiveEditor()
 		,showErrorMessage = function(v){ alert(v); };
 
 	$('#fileupload').css('opacity',0);
@@ -242,7 +246,7 @@ $(function(){
 			editor.windowManager.close();
 		});
 		$('#cancel').click(function(){
-			parent.tinyMCE.activeEditor.windowManager.close();
+			editor.windowManager.close();
 		});
 	};
 

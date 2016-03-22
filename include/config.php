@@ -2,10 +2,10 @@
 define('UPLOAD_ROOT_PATH'	,'userfiles/');
 define('XSL_PATH'			,'assets/xml/');
 define('FILE_UPLOAD_DIR'	,'assets/jQuery-File-Upload/');
-define('LOCALE'				,'ru_RU');
+define('LOCALE'				,'en_US');
 define('DATE_FORMAT'		,'d.m.Y H:i');
-define('DEC_POINT'			,',');
-define('THOUSANDS_SEP'		,' ');
+define('DEC_POINT'			,'.');
+define('THOUSANDS_SEP'		,',');
 define('SESSION_PEFIX'		,'filger_');
 define('LOCALE_PATH'		,'./locale');
 define('TEXT_DOMAIN'		,'default');
