@@ -1,5 +1,6 @@
 <?php
 define('UPLOAD_ROOT_PATH'	,'userfiles/');
+define('UPLOAD_ROOT_URL'	,'/filger/userfiles/');
 define('XSL_PATH'			,'assets/xml/');
 define('FILE_UPLOAD_DIR'	,'assets/jQuery-File-Upload/');
 define('LOCALE'				,'en_US');
@@ -19,5 +20,6 @@ $arFileUploadOptions = array(
 	,'image_versions'		=> array()
 	// The php.ini settings upload_max_filesize and post_max_size
 	// take precedence over the following max_file_size setting:
-	,'max_file_size'		=> 204800 //200Kb
+	,'max_file_size'		=> 2097152 //2MB
+
 );

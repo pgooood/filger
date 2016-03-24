@@ -17,24 +17,33 @@ limitations under the License.
 require_once 'include/config.php';
 require_once 'include/lib.php';
 
+if(!defined('DIRECTORY_SEPARATOR'))
+	define('DIRECTORY_SEPARATOR',empty($_SERVER['WINDIR']) ? '/' : '\\');
+	
+if(!session_id())
+	session_start();
+
 initGettext(LOCALE,LOCALE_PATH,TEXT_DOMAIN);
 
 try{
 $response = new xmlResponse();
-$sd = new sessionDir(UPLOAD_ROOT_PATH);
 $out = new out();
 $action = $out->installRequired() ? 'install' : param('action');
+$spath = new sessionPath(SESSION_PEFIX.'path');
+$currentPath = $spath->relate(UPLOAD_ROOT_PATH);
+$currentUrl = $spath->relate(UPLOAD_ROOT_PATH);
 
 switch($action){
 	case 'sort':
-		$sd->orderBy(param('col'),param('dir'));
+		$_SESSION[SESSION_PEFIX.'order_col'] = param('col');
+		$_SESSION[SESSION_PEFIX.'order_dir'] = param('dir');
 		break;
 	case 'upload':
 		require_once($out->de()->fileUploaderPath.'server/php/UploadHandler.php');
-		if(empty($arFileUploadOptions) || !is_array($arFileUploadOptions))
+		if(!is_array($arFileUploadOptions))
 			$arFileUploadOptions = array();
-		$arFileUploadOptions['upload_dir'] = $sd->path(true);
-		$arFileUploadOptions['upload_url'] = dirname(parse_url($_SERVER['REQUEST_URI'],PHP_URL_PATH)).'/'.$sd->path(true);
+		$arFileUploadOptions['upload_dir'] = $currentPath;
+		$arFileUploadOptions['upload_url'] = $currentUrl;
 		new UploadHandler($arFileUploadOptions,true,array(
 				1 => _('The uploaded file exceeds the upload_max_filesize directive in php.ini')
 				,2 => _('The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form')
@@ -65,17 +74,17 @@ switch($action){
 		if(isset($_REQUEST['file']) && is_array($_REQUEST['file']))
 			$ar = array_merge($ar,$_REQUEST['file']);
 		foreach($ar as $name)
-			if(!removeDir($sd->path(true).$name))
+			if(!removeDir($currentPath.$name))
 				$response->error('fail');
 			$response->success('ok');
 		break;
 	case 'rename_dir':
 		if(isValidFileName($oldName = param('old'))
 			&& ($newName = trim(param('new')))
-			&& is_dir($oldPath = $sd->path(true).$oldName)
+			&& is_dir($oldPath = $currentPath.$oldName)
 		){
 			if(isValidFileName($newName)){
-				if(is_dir($newPath = $sd->path(true).$newName))
+				if(is_dir($newPath = $currentPath.$newName))
 					$response->error(_('Such name already exists'));
 				if(rename($oldPath,$newPath))
 					$response->success(_('Directory renamed'));
@@ -89,10 +98,10 @@ switch($action){
 	case 'rename_file':
 		if(isValidFileName($oldName = param('old'))
 			&& ($newName = trim(param('new')))
-			&& is_file($oldPath = $sd->path(true).$oldName)
+			&& is_file($oldPath = $currentPath.$oldName)
 		){
 			if(isValidFileName($newName)){
-				if(is_file($newPath = $sd->path(true).$newName))
+				if(is_file($newPath = $currentPath.$newName))
 					$response->error(_('Such name already exists'));
 				if(rename($oldPath,$newPath))
 					$response->success(_('File renamed'));
@@ -105,7 +114,7 @@ switch($action){
 		break;
 	case 'new_folder':
 		if(isValidFileName($name = param('name'))){
-			if(mkdir($sd->path(true).$name))
+			if(mkdir($currentPath.$name))
 				$response->success(_('Directory created'));
 			else
 				$response->error(_('Error! Directory hasn\'t been created.'));
@@ -116,10 +125,13 @@ switch($action){
 		require_once 'include/install.php';
 		die;
 	default:
-		$sd->set(param('path'));
+		$spath->change(param('path'));
 }
 
-$dir = new xmlDir($sd->path(true),$sd->path(),$sd->getOrderCol(),$sd->getOrderDir(),$sd->isRoot());
+$dir = new xmlDir($spath
+		,isset($_SESSION[SESSION_PEFIX.'order_col']) ? $_SESSION[SESSION_PEFIX.'order_col'] : null
+		,isset($_SESSION[SESSION_PEFIX.'order_dir']) ? $_SESSION[SESSION_PEFIX.'order_dir'] : null
+	);
 if(param('xml')){
 	header("Content-type: text/xml; charset=utf-8");
 	echo $dir;

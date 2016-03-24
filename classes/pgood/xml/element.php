@@ -49,8 +49,6 @@ class element{
 		return $this->e()->getAttribute($name);
 	}
 	function setAttribute($name,$value = null){
-		if(!$value)
-			throw new Exception('!');
 		if(is_array($name)){
 			foreach($name as $n => $v)
 				if($n) $this->setAttribute($n,$v);

@@ -23,15 +23,15 @@ limitations under the License.
 class xmlDir extends \pgood\xml\xml{
 	protected $orderCol;
 	protected $orderDir;
-	function __construct($path,$displayPath,$orderCol,$orderDir,$isRoot = false){
+	function __construct($spath,$orderCol,$orderDir){
 		parent::__construct();
 		$this->append('dir');
-		$this->de()->displayPath = $displayPath;
+		$this->de()->displayPath = $spath.'';
 		$this->de()->orderCol = $orderCol;
 		$this->de()->orderDir = $orderDir;
-		$this->de()->path = $path.(substr($path,-1) == '/' ? null : '/');
-		$this->de()->url = dirname($_SERVER['PHP_SELF']).'/'.$this->de()->path;
-		$this->initDir($isRoot);
+		$this->de()->path = $spath->relate(UPLOAD_ROOT_PATH);
+		$this->de()->url = $spath->relate(UPLOAD_ROOT_URL);
+		$this->initDir($spath->isRoot());
 	}
 	
 	function initDir($isRoot){
