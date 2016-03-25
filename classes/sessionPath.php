@@ -26,11 +26,11 @@ class sessionPath{
 		if(!session_id())
 			session_start();
 		$this->name = $name;
-		if(!isset($_SESSION[$this->name]))
+		if(!isset($_SESSION[$this->name]) || !is_array($_SESSION[$this->name]) || !is_dir($this->relate(UPLOAD_ROOT_PATH)))
 			$_SESSION[$this->name] = array();
 	}
 	function __toString(){
-		return implode('/',array_filter($_SESSION[$this->name])).'/';
+		return empty($_SESSION[$this->name]) ? '' : implode('/',array_filter($_SESSION[$this->name])).'/';
 	}
 	function change($dir){
 		if(strlen($dir)){

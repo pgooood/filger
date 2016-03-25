@@ -105,7 +105,7 @@
 	<tr class="item">
 		<td class="chb"><input type="checkbox" id="{$id}" name="file" value="{text()}"/></td>
 		<td class="file">
-			<label for="{$id}" style="background-image:url(assets/images/icons/{@ext}.png)"><xsl:value-of select="@name"/></label>
+			<label for="{$id}" style="background-image:url(assets/images/icons/{@ico})"><xsl:value-of select="@name"/></label>
 		</td>
 		<td class="ext"><xsl:value-of select="@ext"/></td>
 		<td class="size"><xsl:value-of select="@size"/></td>

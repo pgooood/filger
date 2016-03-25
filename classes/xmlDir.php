@@ -21,8 +21,7 @@ limitations under the License.
  * @link http://pgood.ru/
  */
 class xmlDir extends \pgood\xml\xml{
-	protected $orderCol;
-	protected $orderDir;
+	protected $orderCol,$orderDir,$arIcons;
 	function __construct($spath,$orderCol,$orderDir){
 		parent::__construct();
 		$this->append('dir');
@@ -33,7 +32,12 @@ class xmlDir extends \pgood\xml\xml{
 		$this->de()->url = $spath->relate(UPLOAD_ROOT_URL);
 		$this->initDir($spath->isRoot());
 	}
-	
+	function getIcon($ext){
+		$file = $ext.'.png';
+		if(!isset($this->arIcons[$ext]))
+			$this->arIcons[$ext] = is_file('assets/images/icons/'.$file);
+		return $this->arIcons[$ext] ? $file : '_.png';
+	}
 	function initDir($isRoot){
 		$e = $this->de();
 		while($e->firstChild) $e->removeChild($e->firstChild);
@@ -82,6 +86,7 @@ class xmlDir extends \pgood\xml\xml{
 				$ef->ext = strtolower(pathinfo($path,PATHINFO_EXTENSION));
 				$ef->size = formatFileSize(filesize($path));
 				$ef->date = date(DATE_FORMAT,filemtime($path));
+				$ef->ico = $this->getIcon($ef->ext);
 			}
 		}
 	}
