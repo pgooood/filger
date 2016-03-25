@@ -35,7 +35,17 @@ if(param('install')){
 				$xml->append($xml->create('page'));
 			$xml->de()->fileUploaderPath = $path;
 			$error = !$xml->save();
+			//remove danger files
+			foreach(scandir($dir = $path.'server/') as $item){
+				if($item == '.' || $item == '..') continue;
+				if($item == 'php'){
+					if(is_file($pathUploader = $dir.'/'.$item.'/index.php'))
+						rename($pathUploader,$pathUploader.'.bak');
+				}else
+					removeDir($dir.'/'.$item);
+			}
 		}
+		unlink($zipPath);
 	}
 	if($error){
 		echo str_replace(array('%HOME_URL%','%DOWNLOAD_URL%','%UNPACK_DIR%')
