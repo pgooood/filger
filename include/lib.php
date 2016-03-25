@@ -76,7 +76,7 @@ function formatFileSize($bytes){
 		$unitIndex++;
 		$res = $v;
 	}
-	return trim(number_format($res,2,DEC_POINT,THOUSANDS_SEP),'0,').' '.$arUnits[$unitIndex];
+	return trim(number_format($res,2,DEC_POINT,THOUSANDS_SEP),'0'.DEC_POINT).' '.$arUnits[$unitIndex];
 }
 
 /**

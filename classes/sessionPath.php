@@ -30,7 +30,7 @@ class sessionPath{
 			$_SESSION[$this->name] = array();
 	}
 	function __toString(){
-		return implode('/',$_SESSION[$this->name]).'/';
+		return implode('/',array_filter($_SESSION[$this->name])).'/';
 	}
 	function change($dir){
 		if(strlen($dir)){
