@@ -44,6 +44,15 @@ table.dir thead th{
 .sort .sort-icon{
 	font-size: 12px;
 }
+th.path{
+	font-weight: normal;
+}
+.path .s{
+	margin: 0 2px;
+}
+.path a{
+	cursor: pointer;
+}
 th.chb,
 td.chb{
 	width:5%;

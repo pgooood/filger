@@ -125,7 +125,10 @@ switch($action){
 		require_once 'include/install.php';
 		die;
 	default:
-		$spath->change(param('path'));
+		$arPath = array_filter(explode('/',param('path')));
+		//vdump($arPath,1);
+		foreach($arPath as $dir)
+			$spath->change($dir);
 }
 
 $dir = new xmlDir($spath

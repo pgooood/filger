@@ -41,6 +41,9 @@ class sessionPath{
 				array_push($_SESSION[$this->name],$dir);
 		}
 	}
+	function getArray(){
+		return $_SESSION[$this->name];
+	}
 	function isRoot(){
 		return !count($_SESSION[$this->name]);
 	}

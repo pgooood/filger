@@ -21,35 +21,39 @@ limitations under the License.
  * @link http://pgood.ru/
  */
 class xmlDir extends \pgood\xml\xml{
-	protected $orderCol,$orderDir,$arIcons;
-	function __construct($spath,$orderCol,$orderDir){
+	protected $orderCol,$orderDir,$arIcons,$path;
+	function __construct(sessionPath $spath,$orderCol,$orderDir){
 		parent::__construct();
+		$this->path = $spath->relate(UPLOAD_ROOT_PATH);
 		$this->append('dir');
-		$this->de()->displayPath = $spath.'';
 		$this->de()->orderCol = $orderCol;
 		$this->de()->orderDir = $orderDir;
-		$this->de()->path = $spath->relate(UPLOAD_ROOT_PATH);
 		$this->de()->url = $spath->relate(UPLOAD_ROOT_URL);
 		$this->initDir($spath->isRoot());
+		$arPath = $spath->getArray();
+		$ePath = $this->de()->append('path');
+		foreach($arPath as $dir)
+			$ePath->append('item')->text($dir);
+		
 	}
 	function getIcon($ext){
-		$file = $ext.'.png';
 		if(!isset($this->arIcons[$ext]))
-			$this->arIcons[$ext] = is_file('assets/images/icons/'.$file);
-		return $this->arIcons[$ext] ? $file : '_.png';
+			$this->arIcons[$ext] = is_file('assets/images/icons/'.$ext.'.png');
+		return $this->arIcons[$ext] ? $ext : '_';
 	}
 	function initDir($isRoot){
 		$e = $this->de();
 		while($e->firstChild) $e->removeChild($e->firstChild);
-		if(is_dir($e->path)
-			&& ($d = dir($e->path))
+		if(is_dir($this->path)
+			&& ($d = dir($this->path))
 		){
 			$arDirs = array();
 			$arFiles = array();
 			while(false !== ($entry = $d->read())){
 				if($entry == '.' || ($isRoot && $entry == '..'))
 					continue;
-				if(is_dir($path = $e->path.'/'.$entry)) $arDirs[$entry] = $path;
+				if(is_dir($path = $this->path.'/'.$entry))
+					$arDirs[$entry] = $path;
 				else{
 					switch($this->de()->orderCol){
 						case 'ext':
@@ -79,7 +83,7 @@ class xmlDir extends \pgood\xml\xml{
 			else
 				asort($arFiles);
 			foreach($arFiles as $entry => $tmp){
-				$path = $e->path.'/'.$entry;
+				$path = $this->path.$entry;
 				$ef = $e->append('file');
 				$ef->text($entry);
 				$ef->name = pathinfo($path,PATHINFO_FILENAME);
