@@ -46,8 +46,8 @@
 				<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0"></div>
 			</div>
 			<nav class="navbar navbar-default toolbar">
-				<div class="collapse navbar-collapse">
-					<div class="navbar-form navbar-left">
+				<div class="container-fluid">
+					<div class="pull-left leftbar">
 						<div class="btn-group" role="group">
 							<label for="fileupload" class="btn btn-default">
 								<span class="glyphicon glyphicon-cloud-upload"></span>
@@ -73,7 +73,7 @@
 							</button>
 						</div>
 					</div>
-					<div class="navbar-form navbar-right">
+					<div class="pull-right rightbar">
 						<button id="ok" type="button" class="btn btn-primary">
 							<xsl:text lang="en">Ok</xsl:text>
 						</button>

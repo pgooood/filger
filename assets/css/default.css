@@ -11,20 +11,37 @@ th{
 .toolbar{
 	margin: 0;
 }
+.toolbar .leftbar,
+.toolbar .rightbar{
+	margin: 7.5px 0;
+}
 label{
 	font-weight: normal;
 	cursor: pointer;
 	margin: 0;
 }
-.file label{
-	display: inline-block;
-	background: no-repeat 0 50%;
-	padding: 0 0 0 20px;
-}
 .dir label{
-	display: inline-block;
+	display: inline;
 	background: url(../images/icons/folder.png) no-repeat 0 50%;
 	padding: 0 0 0 20px;
+}
+.dir .c{
+	display: block;
+	position: relative;
+}
+.dir .c > em{
+	visibility: hidden;
+}
+.dir .w{
+	position:absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
+    -ms-text-overflow: ellipsis;
 }
 .progress{
 	height: 3px;
@@ -34,7 +51,8 @@ label{
 table.dir{
 	margin: 0;
 }
-table.dir thead th{
+table.dir th,
+table.dir td{
 	white-space: nowrap;
 }
 .sort .sort-text{
@@ -59,13 +77,13 @@ td.chb{
 	text-align: center;
 }
 td.name{
-	width:48%;
+	width:45%;
 }
 td.ext{
 	width:10%;
 }
 td.size{
-	width:12%;
+	width:15%;
 }
 td.date{
 	width:20%;

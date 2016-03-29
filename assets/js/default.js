@@ -99,11 +99,13 @@ function dirList(){
 	};
 	this.init=function(){
 		this.$table = $('table#dir');
+		
 		this.$table.floatThead({
 			scrollContainer:function($table){
 				return $table.closest('.wrapper');
 			}
 		});
+		
 		//init column headers
 		this.$table
 			.floatThead('getRowGroups')

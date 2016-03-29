@@ -46,7 +46,7 @@ class template extends cached{
 		}
 	}
 	function xslImportTemplates(template $xsl){
-		$ns = $xsl->query('//xsl:template');
+		$ns = $xsl->query('//xsl:template | /*/xsl:variable');
 		foreach($ns as $e)
 			$this->de()->append($e);
 	}

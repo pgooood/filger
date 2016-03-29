@@ -110,7 +110,7 @@
 </xsl:template>
 
 
-
+<!-- dir -->
 <xsl:template match="dir/dir[not(text()='..')]">
 	<xsl:variable name="id">
 		<xsl:text>dir</xsl:text>
@@ -118,18 +118,27 @@
 	</xsl:variable>
 	<tr class="item">
 		<td class="chb"><input type="checkbox" name="dir" id="{$id}" value="{text()}"/></td>
-		<td class="dir" colspan="4"><label for="{$id}"><xsl:value-of select="text()"/></label></td>
+		<td class="dir" colspan="4">
+			<div class="c"><div class="w">
+				<label for="{$id}"><xsl:value-of select="text()"/></label>
+			</div><xsl:call-template name="palceholder"/></div>
+		</td>
 	</tr>
 </xsl:template>
 
 <xsl:template match="dir/dir[text()='..']">
 	<xsl:variable name="id">parentDir</xsl:variable>
-	<tr>
+	<tr class="item">
 		<td class="chb"><input type="hidden" id="{$id}" value="{text()}"/></td>
-		<td class="dir" colspan="4"><label for="{$id}"><xsl:value-of select="text()"/></label></td>
+		<td class="dir" colspan="4">
+			<div class="c"><div class="w">
+				<label for="{$id}"><xsl:value-of select="text()"/></label>
+			</div><xsl:call-template name="palceholder"/></div>
+		</td>
 	</tr>
 </xsl:template>
 
+<!-- file -->
 <xsl:template match="dir/file">
 	<xsl:variable name="id">
 		<xsl:text>file</xsl:text>
@@ -138,12 +147,30 @@
 	<tr class="item">
 		<td class="chb"><input type="checkbox" id="{$id}" name="file" value="{text()}"/></td>
 		<td class="file">
-			<label for="{$id}" style="background-image:url(assets/images/icons/{@ico}.png)"><xsl:value-of select="@name"/></label>
+			<div class="c"><div class="w">
+				<label for="{$id}" style="background-image:url(assets/images/icons/{@ico}.png)"><xsl:value-of select="@name"/></label>
+			</div><xsl:call-template name="palceholder"/></div>
 		</td>
-		<td class="ext"><xsl:value-of select="@ext"/></td>
-		<td class="size"><xsl:value-of select="@size"/></td>
-		<td class="date"><xsl:value-of select="@date"/></td>
+		<td class="ext">
+			<div class="c"><div class="w">
+				<xsl:value-of select="@ext"/>
+			</div><xsl:call-template name="palceholder"/></div>
+		</td>
+		<td class="size">
+			<div class="c"><div class="w">
+				<xsl:value-of select="@size"/>
+			</div><xsl:call-template name="palceholder"/></div>
+		</td>
+		<td class="date">
+			<div class="c"><div class="w">
+				<xsl:value-of select="@date"/>
+			</div><xsl:call-template name="palceholder"/></div>
+		</td>
 	</tr>
+</xsl:template>
+
+<xsl:template name="palceholder">
+	<em>.</em>
 </xsl:template>
 
 </xsl:stylesheet>
