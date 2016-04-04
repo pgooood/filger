@@ -35,3 +35,6 @@ tinymce.init({
 	}
 });
 ```
+
+## Support
+I am happy to provide support via my personal email address, so if you need a hand fill in feedback form at http://pgood.ru/#feedback-form
