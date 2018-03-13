@@ -17,7 +17,7 @@ limitations under the License.
 /**
  * @package XML lib
  * @author Pavel Khoroshkov aka pgood
- * @link http://pgood.ru/
+ * @link http://pgood.space/
  */
 namespace pgood\xml;
 

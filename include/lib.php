@@ -1,24 +1,12 @@
 <?php
 /*
-Copyright 2016 Pavel Khoroshkov
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
-spl_autoload_register(function($class){
+ * Copyright 2016 Pavel Khoroshkov
+ */
+function classAutoload($class){
 	$class = str_replace('\\','/',$class);
 	if(is_file($path = 'classes/'.$class.'.php'))
 		include($path);
-});
+}
 
 function vdump($v,$die = false){
 	$s = '<pre>'.htmlspecialchars(print_r($v,true)).'</pre>';
@@ -27,47 +15,98 @@ function vdump($v,$die = false){
 	echo $s;
 }
 
-/**
- * initGettext
- */
+function isWindows(){
+	return isset($_SERVER['WINDIR']);
+}
+
+function fdec($filename){
+	return isWindows() ? iconv(WIN_CP,'utf-8',$filename) : $filename;
+	//return iconv(WIN_CP,'utf-8',$filename);
+}
+
+function fenc($filename){
+	if(is_array($filename)){
+		$arEnc = array();
+		foreach($filename as $i => $v)
+			$arEnc[$i] = fenc($v);
+		return $arEnc;
+	}
+	return isWindows() ? iconv('utf-8',WIN_CP,$filename) : $filename;
+}
+
+function checkPHP(){
+	PHP_MAJOR_VERSION > 5 || (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION >= 3)
+		|| die('PHP version of at least 5.3 is required for Filger to work properly');
+	extension_loaded('xsl')
+		|| die('Filger requires PHP with XSL support');
+}
+
+function cleanTemp($dir){
+	$sd = scandir($dir);
+	foreach($sd as $item){
+		if(is_dir($path = $dir.'/'.$item))
+			continue;
+		if((fileatime($path) < time() - 86400)
+			&& (is_writable($path) || (chmod($path,0777) && is_writable($path)))
+		) unlink($path);
+	}
+}
+
+function fileTransfer($path,$contentType,$fileName){
+	header('Content-Description: File Transfer');
+	header('Content-Type: '.$contentType);
+	header('Content-Disposition: attachment; filename*=UTF-8\'\''.rawurlencode($fileName));
+	header('Expires: 0');
+	header('Cache-Control: must-revalidate');
+	header('Pragma: public');
+	header('Content-Length: '.filesize($path));
+	readfile($path);
+	die();
+}
+
 function initGettext($locale,$localePath,$domain){
 	putenv('LANG='.$locale);
 	putenv('LANGUAGE='.$locale);
 	putenv('LC_MESSAGES='.$locale);
-	setlocale(defined('LC_MESSAGES') ? LC_MESSAGES : LC_ALL,$locale);
+	setlocale(defined('LC_MESSAGES') ? LC_MESSAGES : LC_ALL,$locale.'.UTF-8');
 	bindtextdomain($domain,$localePath);
 	bind_textdomain_codeset($domain,'UTF-8');
 	textdomain($domain);
 }
 
-/**
- * param
- */
 function param($name,$filter = FILTER_DEFAULT){
-	if(isset($_REQUEST[$name]))
+	if(isset($_REQUEST[$name])){
+		if(is_array($_REQUEST[$name]))
+			return filter_var_array($_REQUEST[$name],$filter);
 		return filter_var($_REQUEST[$name],$filter);
+	}
 }
 
-/**
- * removeDir
- */
+function sess($name,$v = UNDEFINED){
+	$name = SESSION_PREFIX.$name;
+	if($v === UNDEFINED){
+		if(isset($_SESSION[$name]))
+			return $_SESSION[$name];
+	}else
+		return $_SESSION[$name] = $v;
+}
+
 function removeDir($dir){
 	if(!file_exists($dir)) return true;
-	if(!is_dir($dir) || is_link($dir)) return unlink($dir);
-	foreach(scandir($dir) as $item){
+	if(!is_dir($dir) || is_link($dir))
+		if(is_writable($dir) || (chmod($dir,0777) && is_writable($dir)))
+			return unlink($dir);
+		else return false;
+	$sd = scandir($dir);
+	foreach($sd as $item){
 		if($item == '.' || $item == '..') continue;
 		$path = $dir.'/'.$item;
-		if(!removeDir($path)){
-			chmod($path,0777);
-			if(!removeDir($path)) return false;
-		}
+		if(!removeDir($path) && (!chmod($path,0777) || !removeDir($path)))
+			return false;
 	}
 	return rmdir($dir);
 }
 
-/**
- * formatFileSize
- */
 function formatFileSize($bytes){
 	$arUnits = array(_('B'),_('KB'),_('MB'),_('GB'),_('TB'),_('PB'),_('EB'));
 	$v = $res = $bytes;
@@ -79,15 +118,11 @@ function formatFileSize($bytes){
 	return trim(number_format($res,2,DEC_POINT,THOUSANDS_SEP),'0'.DEC_POINT).' '.$arUnits[$unitIndex];
 }
 
-/**
- * isValidFileName
- */
 function isValidFileName($v){
 	return !preg_match('/[<>:"\/\\\\|\?\*]/',$v) && mb_strlen($v) < 256;
 }
 
 /**
- * getTemplate
  * @return \pgood\xml\template object
  */
 function getTemplate($name,$arTemplatesToImport = null){
@@ -104,4 +139,67 @@ function getTemplate($name,$arTemplatesToImport = null){
 			$e->text(_($e->text()));
 		return $tpl;
 	}
+}
+
+function installFileUpload($fileUploadDownloadUrl,$fileUploadDir){
+	$path = null;
+	if((!is_dir($fileUploadDir) || removeDir($fileUploadDir))
+		&& mkdir($fileUploadDir)
+		&& ($h = fopen($fileUploadDownloadUrl,'r'))
+		&& file_put_contents($zipPath = $fileUploadDir.'jQuery-File-Upload.zip',$h) !== false
+		&& ($zip = new ZipArchive())
+		&& $zip->open($zipPath) === true
+		&& $zip->extractTo($fileUploadDir)
+	){
+		$zip->close();
+		if(is_dir($path = $fileUploadDir.'jQuery-File-Upload-master/')){
+			//remove dangerous files
+			foreach(scandir($dir = $path.'server/') as $item){
+				if($item == '.' || $item == '..') continue;
+				if($item == 'php'){
+					if(is_file($pathUploader = $dir.'/'.$item.'/index.php'))
+						rename($pathUploader,$pathUploader.'.bak');
+				}else
+					removeDir($dir.'/'.$item);
+			}
+		}
+		unlink($zipPath);
+	}
+	return $path;
+}
+
+function defineConfigConst(){
+	$arDefines = array(
+		'UPLOAD_ROOT_PATH'		=> array('xpath' => 'upload/path','required' => true)
+		,'UPLOAD_ROOT_URL'		=> array('xpath' => 'upload/url','required' => true)
+		,'FILE_UPLOADER_PATH'	=> array('xpath' => 'upload/uploader','required' => true)
+		,'LOCALE'				=> array('xpath' => 'locale/lang','required' => true)
+		,'WIN_CP'				=> array('xpath' => 'locale/win_cp','required' => isWindows())
+		,'DOS_CP'				=> array('xpath' => 'locale/dos_cp','required' => isWindows())
+		,'DATE_FORMAT'			=> array('xpath' => 'locale/date','required' => true)
+		,'DEC_POINT'			=> array('xpath' => 'locale/dec_point','required' => true)
+		,'THOUSANDS_SEP'		=> array('xpath' => 'locale/thousands_sep','required' => true)
+		,'AUTH_PATH'			=> array('xpath' => 'authenticator','required' => false)
+	);
+	$conf = new \pgood\xml\cached(CONFIG_PATH);
+	foreach($arDefines as $name => $arData)
+		if(!defined($name)){
+			if(strlen($v = $conf->evaluate('string(/config/'.$arData['xpath'].')')))
+				define($name,$v);
+			elseif($arData['required'])
+				throw new Exception('There is no config value '.$arData['xpath']);
+		}
+}
+function getFileUploadOptions(){
+	$arOptions = array(
+		'max_number_of_files'	=> 999
+		,'accept_file_types'	=> '/.+\.(jpe?g|png|gif|pdf|docx?|xlsx?|txt|zip)$/i'
+		,'image_versions'		=> array()
+		,'max_file_size'		=> 2097152 //2MB
+	);
+	$conf = new \pgood\xml\cached(CONFIG_PATH);
+	foreach($arOptions as $name => $defVal)
+		if(strlen($v = $conf->evaluate('string(/config/file_upload/'.$name.')')))
+			$arOptions[$name] = $v;
+	return $arOptions;
 }

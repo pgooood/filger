@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<upload>
+		<path>userfiles/</path>
+		<url>/filger/userfiles/</url>
+		<uploader>assets/jQuery-File-Upload/jQuery-File-Upload-master/</uploader>
+	</upload>
+	<locale>
+		<lang>en_US</lang>
+		<date>d.m.Y H:i:s</date>
+		<dec_point>.</dec_point>
+		<thousands_sep>,</thousands_sep>
+		<win_cp>windows-1252</win_cp>
+		<dos_cp>CP437</dos_cp>
+	</locale>
+	<file_upload>
+		<max_number_of_files>99</max_number_of_files>
+		<accept_file_types>/.+\.(jpe?g|png|gif|pdf|docx?|xlsx?|txt|zip)$/i</accept_file_types>
+		<max_file_size>2097152</max_file_size>
+	</file_upload>
+	<authenticator>auth.php</authenticator>
+</config>

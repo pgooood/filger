@@ -18,7 +18,7 @@ limitations under the License.
  * nodeList is a DOMNodeList wraper class
  * @package XML lib
  * @author Pavel Khoroshkov aka pgood
- * @link http://pgood.ru/
+ * @link http://pgood.space/
  */
 namespace pgood\xml;
 

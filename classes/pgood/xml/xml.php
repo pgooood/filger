@@ -1,6 +1,6 @@
 <?php
 /*
-Copyright 2016 Pavel Khoroshkov
+Copyright 2018 Pavel Khoroshkov
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ limitations under the License.
  * xml is a DOMDocument wraper class with xpath tools
  * @package XML lib
  * @author Pavel Khoroshkov aka pgood
- * @link http://pgood.ru/
+ * @link http://pgood.space/
  */
 namespace pgood\xml;
 
@@ -30,47 +30,46 @@ class xml{
 		$this->init($v);
 	}
 	function __toString(){
-		return $this->dd()->saveXML();
+		return strval($this->dd()->saveXML());
 	}
 	protected function init($v){
 		if($v){
 			if(is_object($v)){
-				if($v instanceof element) $this->dd = $v->xml()->dd();
-				elseif($v instanceof xml) $this->dd = $v->dd();
-				elseif($v instanceof \DOMDocument) $this->dd = $v;
+				if($v instanceof \DOMDocument) $this->dd = $v;
 				elseif($v instanceof \DOMElement) $this->dd = $v->ownerDocument;
+				elseif($v instanceof element) $this->dd = $v->xml()->dd();
+				elseif($v instanceof xml) $this->dd = $v->dd();
 			}elseif(is_string($v)){
 				if(self::isXMLString($v)){
 					$this->dd = @\DOMDocument::loadXML($v);
 				}elseif(is_file($v)||filter_var($v,FILTER_VALIDATE_URL)!==false){
 					$this->load($v);
-				}else{
+				}elseif(preg_match('/\.xml$/i',$v)){
 					$this->dd = new \DOMDocument('1.0','utf-8');
-					if(preg_match('/\.xml$/i',$v)){
-						$this->documentURI($v);
-					}else{
-						try{
-							$this->dd->appendChild($this->dd->createElement($v));
-						}catch(\DOMException $e){}
-					}
+					$this->documentURI($v);
+				}else{
+					try{
+						$e = new \DOMElement($v);
+						$this->dd = new \DOMDocument('1.0','utf-8');
+						$this->dd->appendChild($e);
+					}catch(\DOMException $e){}
 				}
 			}
-		}else
-			$this->dd = new \DOMDocument('1.0','utf-8');
-		if($this->dd instanceof \DOMDocument)
-			$this->xpc = new \DOMXPath($this->dd);
+		}else $this->dd = new \DOMDocument('1.0', 'utf-8');
+		if($this->dd) $this->xpc = new \DOMXPath($this->dd);
 		else throw new \Exception('xml::init - wrong init value <pre>'.print_r($v,1).'</pre>');
 	}
 	function dd(){
 		return $this->dd;
 	}
-	function de(){
+	function de($name = null){
 		if($this->dd()->documentElement)
 			return new element($this->dd()->documentElement);
+		elseif($name && $this->append($name))
+			return $this->de();
 	}
 	function load($src){
-		$this->dd = new \DOMDocument('1.0', 'utf-8');
-		$this->dd->load($src);
+		$this->dd = @\DOMDocument::load($src);
 		if(!$this->dd) throw new \Exception('xml::load failed <pre>'.print_r($src,1).'</pre>');
 	}
 	function importNode($n,$deep = true){
@@ -92,24 +91,38 @@ class xml{
 			return $n;
 		}
 	}
+	static function fixUri($v){
+		$m = null;
+		if(preg_match('/file:\/([^\/]+.*)$/',$v,$m))
+			$v = 'file://'.$m[1];
+		return $v;
+	}
 	function documentURI($v = null){
 		if($v) $this->dd()->documentURI = $v;
-		return $this->dd()->documentURI;
+		return self::fixUri($this->dd()->documentURI);
 	}
 	function registerNameSpace($prefix,$uri){
 		if(!$this->xpc && $this->dd()) $this->xpc = new \DOMXPath($this->dd());
 		return $this->xpc->registerNamespace($prefix,$uri);
 	}
 	function query($query,$node = null){
-		if($node) $v = $this->xpc->query($query,$node);
-		else $v = $this->xpc->query($query);
-		if($v && $v instanceof \DOMNodeList) $v = new nodeList($v);
+		if($node){
+			if($node instanceof \DOMNode || ($node instanceof element && ($node = $node->e())))
+				$v = $this->xpc->query($query,$node);
+		}else
+			$v = $this->xpc->query($query);
+		if($v && $v instanceof \DOMNodeList)
+			$v = new nodeList($v);
 		return $v;
 	}
 	function evaluate($query,$node = null){
-		if($node) $v = $this->xpc->evaluate($query,$node);
-		else $v = $this->xpc->evaluate($query);
-		if($v && $v instanceof \DOMNodeList) $v = new nodeList($v);
+		if($node){
+			if($node instanceof \DOMNode || ($node instanceof element && ($node = $node->e())))
+				$v = $this->xpc->evaluate($query,$node);
+		}else
+			$v = $this->xpc->evaluate($query);
+		if($v && $v instanceof \DOMNodeList)
+			$v = new nodeList($v);
 		return $v;
 	}
 	function getElementById($id,$attr = 'id'){

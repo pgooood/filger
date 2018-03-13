@@ -18,7 +18,7 @@ limitations under the License.
  * element - is a DOMElement wraper class
  * @package XML lib
  * @author Pavel Khoroshkov aka pgood
- * @link http://pgood.ru/
+ * @link http://pgood.space/
  */
 namespace pgood\xml;
 
@@ -94,6 +94,8 @@ class element{
 			$v = $this->xml()->create($v);
 		if($n = $this->importNode($v)){
 			if($refnode instanceof element)
+				$refnode = $refnode->e();
+			if($refnode instanceof \DOMNode)
 				$n = $this->e()->insertBefore($n,$refnode);
 			else
 				$n = $this->append($n);
@@ -108,7 +110,7 @@ class element{
 		return $this->append($v);
 	}
 	function parent(){
-		if($e = $this->e()->parentNode)
+		if(($e = $this->e()->parentNode) && $e instanceof \DOMElement)
 			return new element($e);
 	}
 	function next(){

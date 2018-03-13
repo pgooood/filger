@@ -1,13 +1,13 @@
 # Filger
-Filger is a PHP plugin for TinyMCE that helps you upload and manage your files on website.  [Demo page](http://pgood.space/filger/)
+Filger is a TinyMCE file manager/uploader for LAMP platforms. [Demo page](http://pgood.space/filger/)
 
 ## Installation
 ### Requirements
-PHP version of at least 5.3 is required for Filger to work properly. As for other PHP extensions, XSL and Gettext are required.
+PHP 5.6 or higher is required for Filger to work properly. As for other PHP extensions, XSL and Gettext are required.
 
 ### Basic Installation
 1. Unpack the zip file and upload it to your web server. For example: /www/filger/
-2. Open /www/filger/include/config.php in your favorite text editor and configure it exactly as you might want it.
+2. Open /www/filger/assets/xml/config.xml in your favorite text editor and configure it exactly as you might want it.
 3. Open the Filger in a browser. For example: http://localhost/filger/.
 4. Filger offers you download jQuery File Upload. Follow the instructions in the installer, it will download and unzip the jQuery File Upload archive for you.
 
@@ -17,24 +17,14 @@ You can translate Filger to your language. Copy /www/filger/locale/ru_RU/LC_MESS
 ```js
 tinymce.init({
 	selector: 'textarea.tinymce'
-	,height: 250
+	,height: 300
 	,plugins: ['link image code']
 	,toolbar: 'link image | code'
-	,file_browser_callback:function(field,url,type,win){
-		var dialog = tinyMCE.activeEditor.windowManager.open({
-			url: '<filger url>?type='+type+'&field='+field
-			,width: 800
-			,height: 350
-			,title: 'Filger'
-			,resizable: true
-		},{
-			window: win
-			,input: field
-			,getWin: function(){return dialog;}
-		});
+	,external_plugins: {
+		'filger': '<filger url>/assets/js/filger.tinymce.plugin.js'
 	}
 });
 ```
 
 ## Support
-I am happy to provide support via my personal email address, so if you need a hand fill in feedback form at http://pgood.ru/#feedback-form
+I am happy to provide support, so if you need a hand fill in feedback form at http://pgood.space/#feedback-form or use Github Issues https://github.com/pgooood/filger/issues
