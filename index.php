@@ -105,28 +105,6 @@ switch($action){
 		}else
 			$response->error(_('Invalid name'));
 		break;
-	case 'extract':
-		if(isValidFileName($file = fenc(param('file')))){
-			$arch = new archive($currentPath.$file);
-			if($arch->extractTo($currentPath))
-				$response->success(_('Archive file has been successfully unpacked'));
-			else
-				$response->error($arch->getError());
-		}else
-			$response->error(_('Invalid archive file name'));
-		break;
-	case 'zip':
-		if((isValidFileName($file = fenc(param('file'))) || $response->error(_('Invalid zip file name')))
-			&& (!param('zip') || $response->error(_('Nothing to zip')))
-			&& (!is_file($currentPath.$file) || $response->error(str_replace('%NAME%',$file,_('File %NAME% already exists'))))
-		){
-			$arch = new archive($currentPath.$file);
-			if($arch->zip($currentPath,fenc(param('zip'))))
-				$response->success(_('Archive file has been successfully created'));
-			else
-				$response->error($arch->getError());
-		}
-		break;
 	case 'download':
 		if(param('file') || $response->error(_('Nothing to download'))){
 			$arItems = $file = fenc(param('file'));
@@ -167,5 +145,4 @@ echo $out;
 }catch(Exception $ex){
 	header("{$_SERVER['SERVER_PROTOCOL']} 500 Internal Server Error");
 	echo 'Exception: '.$ex->getMessage();
-	//echo 'Exception: '.$ex->getMessage().'<pre>'.$ex->getTraceAsString().'</pre>';
 }
