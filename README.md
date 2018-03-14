@@ -1,5 +1,5 @@
 # Filger
-Filger is a TinyMCE file manager/uploader for LAMP platforms. [Demo page](http://pgood.space/filger/)
+Filger is a TinyMCE file manager/uploader for a LAMP platform. [Demo page](http://pgood.space/filger/)
 
 ## Installation
 ### Requirements
