@@ -22,6 +22,7 @@
 	</head>
 	<body>
 		<div id="app">
+			<div class="spinner" v-show="false"></div>
 			<dir-list/>
 		</div>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
