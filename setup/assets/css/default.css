@@ -1,0 +1,48 @@
+.image-container{
+    height: 100%;
+    background-position: center center;
+    background-size: cover;
+	background-image: url('../img/bg.jpg')
+}
+.popover-content{
+	display: block;
+}
+.nav{
+	margin-bottom: 20px;
+}
+.help-block{
+	margin-bottom: 0;
+}
+.panel-body{
+	padding: 15px 20px;
+}
+.panel-heading > *{
+	margin: 0;
+}
+.popover-content{
+	min-width: 180px;
+}
+fieldset{
+	margin-bottom: 10px;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type='number']{
+    -moz-appearance:textfield;
+}
+
+/* Customize container */
+@media (min-width: 768px) {
+	.container {
+		max-width: 730px;
+	}
+}
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+	.jumbotron {
+		border-bottom: 0;
+	}
+}

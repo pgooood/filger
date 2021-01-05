@@ -3,7 +3,8 @@ Filger is a TinyMCE file manager/uploader for a LAMP platform. [Demo page](http:
 
 ## Installation
 ### Requirements
-PHP 5.6 or higher is required for Filger to work properly. As for other PHP extensions, XSL and Gettext are required.
+TinyMCE 5 and PHP 5.6 or higher is required for Filger to work properly. As for other PHP extensions, XSL and Gettext are required.
+
 
 ### Basic Installation
 1. Unpack the zip file and upload it to your web server. For example: /www/filger/

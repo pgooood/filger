@@ -215,10 +215,6 @@ Vue.component('dir-list',{
 					</div>
 				</div>
 			</div>
-			<div class="float-right rightbar">
-				<button id="ok" type="button" class="btn btn-primary btn-sm" @click="onOk">{{ $t('message.Ok') }}</button>
-				<button id="cancel" type="button" class="btn btn-secondary btn-sm" @click="onCancel">{{ $t('message.Cancel') }}</button>
-			</div>
 		</div>
 	</nav>
 	
@@ -289,6 +285,13 @@ Vue.component('dir-list',{
 		}
 		,onSelectionChange: function(evt){
 			this.checkState();
+			window.parent.postMessage({
+				mceAction: 'customAction',
+				data: {
+					name: 'selectionChange'
+					,path: this.getSelectedPath()
+				}
+			},'*');
 		}
 		,onRemove: function(evt){
 			var comp = this;
@@ -369,25 +372,6 @@ Vue.component('dir-list',{
 				window.location.search = strSearch;
 			}else
 				this.showErrorMessage(this.$t('message.download_nothing_selected'));
-		}
-		,onOk: function(evt){
-			var editor = getActiveEditor()
-				,path = this.getSelectedPath();
-			if(!path){
-				this.showErrorMessage(this.$t('message.ok_nothing_selected'));
-			}else if(editor){
-				var args = editor.windowManager.getParams()
-				if(args && typeof(args.oninsert) == 'function')
-					args.oninsert(path);
-				else
-					editor.windowManager.close();
-			}
-		}
-		,onCancel: function(evt){
-			var editor = getActiveEditor();
-			if(editor){
-				editor.windowManager.close();
-			}
 		}
 		,onSort: function(evt){
 			var col = $(evt.target).closest('.sort').data('col')

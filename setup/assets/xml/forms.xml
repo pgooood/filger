@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<forms>
+	<form id="setup" method="post" action="./" baseURI="file:///this-path-will-be-overwritten.xml?/config">
+		<field type="hidden" name="action" value="save-config"/>
+		<tab id="php" title="PHP">
+			<php-checker>
+				<ext name="xsl">Filger requires PHP with XSL support</ext>
+				<ext name="gettext">Filger requires PHP with gettext support</ext>
+				<ext name="zip">The file compression feature requires the PHP zip extension</ext>
+				<ext name="rar">For unpacking RAR files the PHP rar extension required</ext>
+				<ext name="zlib">For unpacking tar, gz, tgz files the PHP zlib extension required</ext>
+				<ext name="gd2">The thumbnails view feature requires the PHP GD2 extension</ext>
+				<val name="phar.readonly" equal="0">Phar::decompress requires the php.ini setting phar.readonly to be set to 0. Current value is %CURRENT_VALUE%.</val>
+			</php-checker>
+			<buttonset>
+				<button type="button" class="primary" align="right" onclick="nextTab(this)">
+					<text>Next</text>
+					<icon name="menu-right"/>
+				</button>
+			</buttonset>
+		</tab>
+		<tab id="common" title="Common">
+			<field type="text" label="Upload folder path" name="upload_root_path" required="required" uri="/upload/path"/>
+			<field type="text" label="Upload folder URL" name="upload_root_url" required="required" uri="/upload/url"/>
+			<field type="text" label="Authenticator path" name="authenticator" uri="/authenticator" title="A PHP file that checks user rights" placeholder="A PHP file that checks user rights"/>
+			<field type="select" class="text-select" label="Language" name="locale" required="required" uri="/locale/lang"><option value="">...</option><option value="af_ZA">Afrikaans (South Africa)</option><option value="ar_AE">Arabic (U.A.E.)</option><option value="ar_BH">Arabic (Bahrain)</option><option value="ar_DZ">Arabic (Algeria)</option><option value="ar_EG">Arabic (Egypt)</option><option value="ar_IQ">Arabic (Iraq)</option><option value="ar_JO">Arabic (Jordan)</option><option value="ar_KW">Arabic (Kuwait)</option><option value="ar_LB">Arabic (Lebanon)</option><option value="ar_LY">Arabic (Libya)</option><option value="ar_MA">Arabic (Morocco)</option><option value="ar_OM">Arabic (Oman)</option><option value="ar_QA">Arabic (Qatar)</option><option value="ar_SA">Arabic (Saudi Arabia)</option><option value="ar_SY">Arabic (Syria)</option><option value="ar_TN">Arabic (Tunisia)</option><option value="ar_YE">Arabic (Yemen)</option><option value="az_AZ">Azeri (Latin) (Azerbaijan)</option><option value="az_AZ">Azeri (Cyrillic) (Azerbaijan)</option><option value="be_BY">Belarusian (Belarus)</option><option value="bg_BG">Bulgarian (Bulgaria)</option><option value="bs_BA">Bosnian (Bosnia and Herzegovina)</option><option value="ca_ES">Catalan (Spain)</option><option value="cs_CZ">Czech (Czech Republic)</option><option value="cy_GB">Welsh (United Kingdom)</option><option value="da_DK">Danish (Denmark)</option><option value="de_AT">German (Austria)</option><option value="de_CH">German (Switzerland)</option><option value="de_DE">German (Germany)</option><option value="de_LI">German (Liechtenstein)</option><option value="de_LU">German (Luxembourg)</option><option value="dv_MV">Divehi (Maldives)</option><option value="el_GR">Greek (Greece)</option><option value="en_AU">English (Australia)</option><option value="en_BZ">English (Belize)</option><option value="en_CA">English (Canada)</option><option value="en_CB">English (Caribbean)</option><option value="en_GB">English (United Kingdom)</option><option value="en_IE">English (Ireland)</option><option value="en_JM">English (Jamaica)</option><option value="en_NZ">English (New Zealand)</option><option value="en_PH">English (Republic of the Philippines)</option><option value="en_TT">English (Trinidad and Tobago)</option><option value="en_US">English (United States)</option><option value="en_ZA">English (South Africa)</option><option value="en_ZW">English (Zimbabwe)</option><option value="es_AR">Spanish (Argentina)</option><option value="es_BO">Spanish (Bolivia)</option><option value="es_CL">Spanish (Chile)</option><option value="es_CO">Spanish (Colombia)</option><option value="es_CR">Spanish (Costa Rica)</option><option value="es_DO">Spanish (Dominican Republic)</option><option value="es_EC">Spanish (Ecuador)</option><option value="es_ES">Spanish (Castilian)</option><option value="es_ES">Spanish (Spain)</option><option value="es_GT">Spanish (Guatemala)</option><option value="es_HN">Spanish (Honduras)</option><option value="es_MX">Spanish (Mexico)</option><option value="es_NI">Spanish (Nicaragua)</option><option value="es_PA">Spanish (Panama)</option><option value="es_PE">Spanish (Peru)</option><option value="es_PR">Spanish (Puerto Rico)</option><option value="es_PY">Spanish (Paraguay)</option><option value="es_SV">Spanish (El Salvador)</option><option value="es_UY">Spanish (Uruguay)</option><option value="es_VE">Spanish (Venezuela)</option><option value="et_EE">Estonian (Estonia)</option><option value="eu_ES">Basque (Spain)</option><option value="fa_IR">Farsi (Iran)</option><option value="fi_FI">Finnish (Finland)</option><option value="fo_FO">Faroese (Faroe Islands)</option><option value="fr_BE">French (Belgium)</option><option value="fr_CA">French (Canada)</option><option value="fr_CH">French (Switzerland)</option><option value="fr_FR">French (France)</option><option value="fr_LU">French (Luxembourg)</option><option value="fr_MC">French (Principality of Monaco)</option><option value="gl_ES">Galician (Spain)</option><option value="gu_IN">Gujarati (India)</option><option value="he_IL">Hebrew (Israel)</option><option value="hi_IN">Hindi (India)</option><option value="hr_BA">Croatian (Bosnia and Herzegovina)</option><option value="hr_HR">Croatian (Croatia)</option><option value="hu_HU">Hungarian (Hungary)</option><option value="hy_AM">Armenian (Armenia)</option><option value="id_ID">Indonesian (Indonesia)</option><option value="is_IS">Icelandic (Iceland)</option><option value="it_CH">Italian (Switzerland)</option><option value="it_IT">Italian (Italy)</option><option value="ja_JP">Japanese (Japan)</option><option value="ka_GE">Georgian (Georgia)</option><option value="kk_KZ">Kazakh (Kazakhstan)</option><option value="kn_IN">Kannada (India)</option><option value="ko_KR">Korean (Korea)</option><option value="kok_IN">Konkani (India)</option><option value="ky_KG">Kyrgyz (Kyrgyzstan)</option><option value="lt_LT">Lithuanian (Lithuania)</option><option value="lv_LV">Latvian (Latvia)</option><option value="mi_NZ">Maori (New Zealand)</option><option value="mk_MK">FYRO Macedonian (Former Yugoslav Republic of Macedonia)</option><option value="mn_MN">Mongolian (Mongolia)</option><option value="mr_IN">Marathi (India)</option><option value="ms_BN">Malay (Brunei Darussalam)</option><option value="ms_MY">Malay (Malaysia)</option><option value="mt_MT">Maltese (Malta)</option><option value="nb_NO">Norwegian (Bokm?l) (Norway)</option><option value="nl_BE">Dutch (Belgium)</option><option value="nl_NL">Dutch (Netherlands)</option><option value="nn_NO">Norwegian (Nynorsk) (Norway)</option><option value="ns_ZA">Northern Sotho (South Africa)</option><option value="pa_IN">Punjabi (India)</option><option value="pl_PL">Polish (Poland)</option><option value="ps_AR">Pashto (Afghanistan)</option><option value="pt_BR">Portuguese (Brazil)</option><option value="pt_PT">Portuguese (Portugal)</option><option value="qu_BO">Quechua (Bolivia)</option><option value="qu_EC">Quechua (Ecuador)</option><option value="qu_PE">Quechua (Peru)</option><option value="ro_RO">Romanian (Romania)</option><option value="ru_RU">Russian (Russia)</option><option value="sa_IN">Sanskrit (India)</option><option value="se_FI">Sami (Northern) (Finland)</option><option value="se_FI">Sami (Skolt) (Finland)</option><option value="se_FI">Sami (Inari) (Finland)</option><option value="se_NO">Sami (Northern) (Norway)</option><option value="se_NO">Sami (Lule) (Norway)</option><option value="se_NO">Sami (Southern) (Norway)</option><option value="se_SE">Sami (Northern) (Sweden)</option><option value="se_SE">Sami (Lule) (Sweden)</option><option value="se_SE">Sami (Southern) (Sweden)</option><option value="sk_SK">Slovak (Slovakia)</option><option value="sl_SI">Slovenian (Slovenia)</option><option value="sq_AL">Albanian (Albania)</option><option value="sr_BA">Serbian (Latin) (Bosnia and Herzegovina)</option><option value="sr_BA">Serbian (Cyrillic) (Bosnia and Herzegovina)</option><option value="sr_SP">Serbian (Latin) (Serbia and Montenegro)</option><option value="sr_SP">Serbian (Cyrillic) (Serbia and Montenegro)</option><option value="sv_FI">Swedish (Finland)</option><option value="sv_SE">Swedish (Sweden)</option><option value="sw_KE">Swahili (Kenya)</option><option value="syr_SY">Syriac (Syria)</option><option value="ta_IN">Tamil (India)</option><option value="te_IN">Telugu (India)</option><option value="th_TH">Thai (Thailand)</option><option value="tl_PH">Tagalog (Philippines)</option><option value="tn_ZA">Tswana (South Africa)</option><option value="tr_TR">Turkish (Turkey)</option><option value="tt_RU">Tatar (Russia)</option><option value="uk_UA">Ukrainian (Ukraine)</option><option value="ur_PK">Urdu (Islamic Republic of Pakistan)</option><option value="uz_UZ">Uzbek (Uzbekistan)</option><option value="vi_VN">Vietnamese (Viet Nam)</option><option value="xh_ZA">Xhosa (South Africa)</option><option value="zh_CN">Chinese (S)</option><option value="zh_HK">Chinese (Hong Kong)</option><option value="zh_MO">Chinese (Macau)</option><option value="zh_SG">Chinese (Singapore)</option><option value="zh_TW">Chinese (T)</option><option value="zu_ZA">Zulu (South Africa)</option></field>
+			<field type="select" class="text-select" label="Date format" name="date_format" required="required" uri="/locale/date">
+				<option value="">...</option>
+				<option value="mm/dd/y h:i:s A">12/22/06  03:12:46 PM</option>
+				<option value="d/m/Y H:i:s">22/12/2006 15:12:46</option>
+				<option value="d.m.Y H:i:s">22.12.2006 15:12:46</option>
+				<popover>
+					<template>
+						<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><a href="http://php.net/manual/en/function.date.php#refsect1-function.date-parameters" target="_blank"><small class="popover-content"></small></a></div>
+					</template>
+					<content>http://php.net/manual/en/function.date.php</content>
+				</popover>
+			</field>
+			<fieldset title="Number format">
+				<field type="text" placeholder="Decimal point" title="Decimal point" name="dec_point" required="required" uri="/locale/dec_point"/>
+				<field type="text" placeholder="Thousand separator" title="Thousand separator" name="thousands_sep" required="required" uri="/locale/thousands_sep"/>
+			</fieldset>
+			<buttonset>
+				<button type="button" class="primary" align="right" onclick="nextTab(this)">
+					<text>Next</text>
+					<icon name="menu-right"/>
+				</button>
+				<button type="button" align="left" onclick="prevTab(this)">
+					<icon name="menu-left"/>
+					<text>Previous</text>
+				</button>
+			</buttonset>
+		</tab>
+		<tab id="file_upload" title="File Upload">
+			<jqueryFileUploadInstaller>
+				<html>&lt;p&gt;&lt;a href="https://blueimp.github.io/jQuery-File-Upload/" target="_blank"&gt;jQuery File Upload&lt;/a&gt; required to upload files to server&lt;/p&gt;</html>
+			</jqueryFileUploadInstaller>
+			<field type="number" label="Max number of files" name="max_number_of_files" required="required" min="0" uri="/file_upload/max_number_of_files"><desc>The maximum number of files for the upload directory</desc></field>
+			<field type="text" label="Accept file types" name="accept_file_types" required="required" uri="/file_upload/accept_file_types"><desc>Defines which files (based on their names) are accepted for upload</desc></field>
+			<field type="number" label="Max file size (bytes)" name="max_file_size" required="required" min="0" uri="/file_upload/max_file_size"><desc>php.ini settings take precedence over this one</desc></field>
+			<buttonset>
+				<button type="button" class="primary" align="right" onclick="nextTab(this)">
+					<text>Next</text>
+					<icon name="menu-right"/>
+				</button>
+				<button type="button" align="left" onclick="prevTab(this)">
+					<icon name="menu-left"/>
+					<text>Previous</text>
+				</button>
+			</buttonset>
+		</tab>
+		<tab id="misc" title="Miscellaneous">
+			<html>&lt;h4&gt;Windows Servers&lt;/h4&gt;</html>
+			<field type="select" class="text-select" label="Code Page" name="win_cp" uri="/locale/win_cp">
+				<option value="">...</option>
+				<option value="windows-1250">1250 (Central Europe)</option>
+				<option value="windows-1251">1251 (Cyrillic)</option>
+				<option value="windows-1252">1252 (Latin I)</option>
+				<option value="windows-1253">1253 (Greek)</option>
+				<option value="windows-1254">1254 (Turkish)</option>
+				<option value="windows-1255">1255 (Hebrew)</option>
+				<option value="windows-1256">1256 (Arabic)</option>
+				<option value="windows-1257">1257 (Baltic)</option>
+				<option value="windows-1258">1258 (Vietnam)</option>
+				<option value="windows-874">874 (Thai)</option>
+			</field>
+			<html>&lt;h4&gt;ZIP extension&lt;/h4&gt;&lt;p&gt;For transcoding UTF-8 filenames on Windows servers after unpacking&lt;/p&gt;</html>
+			<field type="select" class="text-select" label="DOS Code Page" name="dos_cp" uri="/locale/dos_cp">
+				<option value="">...</option>
+				<option value="CP437">437 United States</option>
+				<option value="CP850">850 Multilingual (Latin I)</option>
+				<option value="CP852">852 Slavic (Latin II)</option>
+				<option value="CP855">855 Cyrillic (Russian)</option>
+				<option value="CP857">857 Turkish</option>
+				<option value="CP860">860 Portuguese</option>
+				<option value="CP861">861 Icelandic</option>
+				<option value="CP863">863 Canadian-French</option>
+				<option value="CP865">865 Nordic</option>
+				<option value="CP866">866 Russian</option>
+				<option value="CP869">869 Modern Greek</option>
+				<popover>
+					<template>
+						<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><a href="https://en.wikipedia.org/wiki/Code_page#IBM_PC_.28OEM.29_code_pages" target="_blank"><small class="popover-content"></small></a></div>
+					</template>
+					<content>https://en.wikipedia.org/wiki/Code_page</content>
+				</popover>
+			</field>
+			<buttonset>
+				<button type="submit" align="right" class="success">
+					<icon name="ok"/>
+					<text>Save</text>
+				</button>
+				<button type="button" align="left" onclick="prevTab(this)">
+					<icon name="menu-left"/>
+					<text>Previous</text>
+				</button>
+			</buttonset>
+		</tab>
+		<script src="assets/js/default.js"/>
+	</form>
+</forms>

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2016 Pavel Khoroshkov
+ * Copyright 2021 Pavel Khoroshkov
  */
 function classAutoload($class){
 	$class = str_replace('\\','/',$class);
@@ -20,18 +20,11 @@ function isWindows(){
 }
 
 function fdec($filename){
-	return isWindows() ? iconv(WIN_CP,'utf-8',$filename) : $filename;
-	//return iconv(WIN_CP,'utf-8',$filename);
+	return $filename;
 }
 
 function fenc($filename){
-	if(is_array($filename)){
-		$arEnc = array();
-		foreach($filename as $i => $v)
-			$arEnc[$i] = fenc($v);
-		return $arEnc;
-	}
-	return isWindows() ? iconv('utf-8',WIN_CP,$filename) : $filename;
+	return $filename;
 }
 
 function checkPHP(){
