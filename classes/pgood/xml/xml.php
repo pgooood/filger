@@ -69,8 +69,9 @@ class xml{
 			return $this->de();
 	}
 	function load($src){
-		$this->dd = @\DOMDocument::load($src);
-		if(!$this->dd) throw new \Exception('xml::load failed <pre>'.print_r($src,1).'</pre>');
+		$this->dd = new \DOMDocument;
+		if(!$this->dd->load($src))
+			throw new \Exception('xml::load failed <pre>'.print_r($src,1).'</pre>');
 	}
 	function importNode($n,$deep = true){
 		if($n instanceof xml && $n->de()) $n = $n->de()->e();
